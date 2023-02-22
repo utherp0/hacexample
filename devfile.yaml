@@ -1,0 +1,13 @@
+schemaVersion: 2.2.0
+metadata:
+  name: bootcampapp-quarkus-s2i
+  version: 1.1.0
+  provider: Uth
+  displayName: bootcampapp
+  description: bootcampapp
+  tags: ["Java", "Maven"]
+  projectType: "maven"
+  language: "java"
+parent:
+  id: java-maven
+  registryUrl: "https://registry.devfile.io"

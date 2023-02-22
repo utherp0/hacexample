@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: dd9efecb0a26ee2e94f4b921aaf167b650ec3149
+    app.quarkus.io/build-timestamp: 2022-10-24 - 10:20:52 +0000
+  labels:
+    app.kubernetes.io/name: bootcampapp
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: bootcampapp
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: bootcampapp
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: dd9efecb0a26ee2e94f4b921aaf167b650ec3149
+    app.quarkus.io/build-timestamp: 2022-10-24 - 10:20:52 +0000
+  labels:
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/name: bootcampapp
+  name: bootcampapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/version: 1.0.0-SNAPSHOT
+      app.kubernetes.io/name: bootcampapp
+  template:
+    metadata:
+      annotations:
+        app.quarkus.io/commit-id: dd9efecb0a26ee2e94f4b921aaf167b650ec3149
+        app.quarkus.io/build-timestamp: 2022-10-24 - 10:20:52 +0000
+      labels:
+        app.kubernetes.io/version: 1.0.0-SNAPSHOT
+        app.kubernetes.io/name: bootcampapp
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: JAVA_APP_JAR
+              value: /deployments/quarkus-run.jar
+          image: uther/bootcampapp:1.0.0-SNAPSHOT
+          imagePullPolicy: Always
+          name: bootcampapp
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
